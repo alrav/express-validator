@@ -1,7 +1,12 @@
+let defaultFormatter = null;
+
 module.exports = req => decorateAsValidationResult({}, req._validationErrors);
+module.exports.setDefaultFormatter = (formatter) => {
+  defaultFormatter = formatter;
+};
 
 function decorateAsValidationResult(obj, errors = []) {
-  let formatter = error => error;
+  let formatter = defaultFormatter || (error => error);
 
   obj.isEmpty = () => !errors.length;
   obj.array = ({ onlyFirstError } = {}) => {
@@ -38,4 +43,4 @@ function decorateAsValidationResult(obj, errors = []) {
   };
 
   return obj;
-}
+};
